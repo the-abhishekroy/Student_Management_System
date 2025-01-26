@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/">Dashboard</a>
+        <a href="/students/add">Add Student</a>
+        <a href="/students">View All</a>
+    </nav>
+
+    <div class="container">
+        <h1>Edit Student</h1>
+        <div class="card">
+            <form id="editStudentForm" class="student-form">
+                <div class="form-group">
+                    <label for="studentId">Student ID</label>
+                    <input type="text" id="studentId" name="studentId" value="<%= student.studentId %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" value="<%= student.name %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="<%= student.email %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="course">Course</label>
+                    <select id="course" name="course" required>
+                        <option value="Computer Science" <%= student.course === 'Computer Science' ? 'selected' : '' %>>Computer Science</option>
+                        <option value="Engineering" <%= student.course === 'Engineering' ? 'selected' : '' %>>Engineering</option>
+                        <option value="Business" <%= student.course === 'Business' ? 'selected' : '' %>>Business</option>
+                        <option value="Arts" <%= student.course === 'Arts' ? 'selected' : '' %>>Arts</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="gpa">GPA</label>
+                    <input type="number" id="gpa" name="gpa" step="0.01" min="0" max="4" value="<%= student.gpa %>" required>
+                </div>
+
+                <button type="submit" class="btn">Update Student</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('editStudentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                const response = await fetch('/api/students/<%= student.id %>', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    window.location.href = '/students';
+                } else {
+                    alert('Error updating student');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error updating student');
+            }
+        });
+    </script>
+</body>
+</html> 

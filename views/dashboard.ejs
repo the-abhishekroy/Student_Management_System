@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management Dashboard</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/">Dashboard</a>
+        <a href="/students/add">Add Student</a>
+        <a href="/students">View All</a>
+    </nav>
+
+    <div class="search-section card">
+        <form id="searchForm">
+            <div class="search-grid">
+                <input type="text" name="query" placeholder="Search students...">
+                <select name="sortBy">
+                    <option value="name">Sort by Name</option>
+                    <option value="gpa">Sort by GPA</option>
+                    <option value="course">Sort by Course</option>
+                </select>
+                <select name="filterCourse">
+                    <option value="">All Courses</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Business">Business</option>
+                </select>
+                <input type="number" name="minGPA" placeholder="Min GPA" step="0.1" min="0" max="4">
+                <button type="submit" class="btn">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="container">
+        <h1>Student Management Dashboard</h1>
+        
+        <div class="stats-grid">
+            <div class="card stat-card">
+                <h3>Total Students</h3>
+                <p class="stat-number"><%= totalStudents %></p>
+            </div>
+            <div class="card stat-card">
+                <h3>Average GPA</h3>
+                <p class="stat-number"><%= averageGPA.toFixed(2) %></p>
+            </div>
+        </div>
+
+        <h2>Recent Students</h2>
+        <div class="students-list">
+            <% recentStudents.forEach(student => { %>
+                <div class="card student-card">
+                    <div class="student-info">
+                        <div>
+                            <h3><%= student.name %></h3>
+                            <p class="text-secondary">ID: <%= student.studentId %></p>
+                        </div>
+                        <div>
+                            <p><strong>Email:</strong> <%= student.email %></p>
+                            <p><strong>Course:</strong> <%= student.course %></p>
+                        </div>
+                        <div>
+                            <p><strong>GPA:</strong> <span class="badge"><%= student.gpa %></span></p>
+                            <p><strong>Joined:</strong> <%= new Date(student.joinDate).toLocaleDateString() %></p>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</body>
+</html> 

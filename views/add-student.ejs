@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Student</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/">Dashboard</a>
+        <a href="/students/add">Add Student</a>
+        <a href="/students">View All</a>
+    </nav>
+
+    <div class="container">
+        <h1>Add New Student</h1>
+        <div class="card">
+            <form id="addStudentForm" class="student-form">
+                <div class="form-group">
+                    <label for="studentId">Student ID</label>
+                    <input type="text" id="studentId" name="studentId" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="course">Course</label>
+                    <select id="course" name="course" required>
+                        <option value="">Select Course</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Business">Business</option>
+                        <option value="Arts">Arts</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="gpa">GPA</label>
+                    <input type="number" id="gpa" name="gpa" step="0.01" min="0" max="10" required>
+                </div>
+
+                <button type="submit" class="btn">Add Student</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    document.getElementById('addStudentForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+        
+        try {
+            const response = await fetch('/api/students', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                window.location.href = '/'; // Redirect to dashboard
+            } else {
+                alert('Error adding student');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error adding student');
+        }
+    });
+    </script>
+</body>
+</html> 
